@@ -1,9 +1,9 @@
-# [ICCV 2021] FuSta: Hybrid Neural Fusion for Full-frame Video Stabilization
-### [Project Page](https://alex04072000.github.io/FuSta/) | [Video](https://www.youtube.com/watch?v=KO3sULs4hso) | [Paper](https://arxiv.org/abs/2102.06205) | [Google Colab](https://colab.research.google.com/drive/1l-fUzyM38KJMZyKMBWw_vu7ZUyDwgdYH?usp=sharing)
+# HuKIS-SLAM: Humanoid Kinematics-Integrated Image Stabilized
+SLAM System
 
 <img src='./teaser.png' width=1000>
 
-Existing video stabilization methods often generate visible distortion or require aggressive cropping of frame boundaries, resulting in smaller field of views. In this work, we present a frame synthesis algorithm to achieve full-frame video stabilization. We first estimate dense warp fields from neighboring frames and then synthesize the stabilized frame by fusing the warped contents. Our core technical novelty lies in the learning-based hybrid-space fusion that alleviates artifacts caused by optical flow inaccuracy and fast-moving objects. We validate the effectiveness of our method on the NUS, selfie, and DeepStab video datasets. Extensive experiment results demonstrate the merits of our approach over prior video stabilization methods.
+Currently, humanoid robots executing various tasks experience significant image jitter due to bipedal movement, leading to image blur and dramatic changes in camera perspectives. We propose a novel multimodal model called HuKIS-SLAM. This model employs our designed ST-Net for motion smoothing, which stabilizes the input images in advance, and then inputs them into the convolutional neural network MTSVS to fuse them into highly stable frames. Our key innovation lies in integrating head pose learning for humanoid robots, effectively mitigating the effects caused by inaccurate optical flow and fast-moving objects. Extensive experiments on both virtual and real-world datasets demonstrate the advantages of our method over other Visual SLAM approaches.
 
 ## Setup
 
