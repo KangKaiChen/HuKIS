@@ -49,6 +49,13 @@ HRReal/
           00002.jpg
           ...
         frame_6dof.csv
+    IMG10_0002/
+        GT/
+          00000.jpg
+          00001.jpg
+          00002.jpg
+          ...
+        frame_6dof.csv
 
 ```
 
