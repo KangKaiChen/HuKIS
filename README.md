@@ -66,7 +66,8 @@ Run HuKIS-SLAM video stabilization.
 conda deactivate
 conda activate HuKIS
 cd ..
-python run_HuKIS.py --load FuSta_model/checkpoint/model_epoch050.pth --input_frames_path input_frames/ --warping_field_path CVPR2020_warping_field/ --output_path output/ --temporal_width 41 --temporal_step 4
+cd HuKIS-SLAM
+python run_HuKIS.py --load  HuKIS-SLAM/all_checkpoint/model_epoch050.pth --input_frames_path input_frames/ --warping_field_path CVPR2020_warping_field/ --output_path output/ --temporal_width 41 --temporal_step 4
 ```
 
 ## Acknowledgements
