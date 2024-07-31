@@ -35,6 +35,9 @@ conda install -c conda-forge cupy cudatoolkit=10.1
 pip install PyMaxflow
 ```
 
+## Data Preparation
+Download dataset for training and test [here](https://github.com/TuSimple/tusimple-benchmark). Uncompress HRReal.zip and move HRReal folder under the HuKIS folder.
+
 ## Running code
 
 Calculate smoothed flow using [Yu and Ramamoorthi 2020].
