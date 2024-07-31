@@ -54,7 +54,7 @@ python run_HuKIS.py --load FuSta_model/checkpoint/model_epoch050.pth --input_fra
 
 ## Acknowledgements
 
-[Yu and Ramamoorthi 2020](http://jiyang.fun/projects.html)]
+[Yu and Ramamoorthi 2020](http://jiyang.fun/projects.html)
 
 [FuSta](https://alex04072000.github.io/FuSta/)
 
