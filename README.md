@@ -38,6 +38,20 @@ pip install PyMaxflow
 ## Data Preparation
 Download dataset for training and test [here](https://github.com/TuSimple/tusimple-benchmark). Uncompress HRReal.zip and move HRReal folder under the HuKIS folder.
 
+We expect the directory structure to be the following:
+### HRReal:
+```
+HRReal/
+    IMG10_0001/
+        GT/
+          00000.jpg
+          00001.jpg
+          00002.jpg
+          ...
+        frame_6dof.csv
+
+```
+
 ## Running code
 
 Calculate smoothed flow using [Yu and Ramamoorthi 2020].
