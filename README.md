@@ -1,174 +1,86 @@
-**FuseRoad**: Enhancing Lane Shape Prediction Through Semantic Knowledge Integration and Cross-Dataset Training
-=======
+# [ICCV 2021] FuSta: Hybrid Neural Fusion for Full-frame Video Stabilization
+### [Project Page](https://alex04072000.github.io/FuSta/) | [Video](https://www.youtube.com/watch?v=KO3sULs4hso) | [Paper](https://arxiv.org/abs/2102.06205) | [Google Colab](https://colab.research.google.com/drive/1l-fUzyM38KJMZyKMBWw_vu7ZUyDwgdYH?usp=sharing)
 
-<div align="center">
-  <img src="./resources/Arch.png" width="1440">
-</div>
-<p align="center">
-  Figure 1: Architecture of FuseRoad.
-</p>
+<img src='./teaser.png' width=1000>
 
-* 🔥 End-to-end multi task training: Use two dataset simultaneously.
-* 🔥 High performance: reach remarkable 97.42% F-1 score on the TuSimple testing set.
+Existing video stabilization methods often generate visible distortion or require aggressive cropping of frame boundaries, resulting in smaller field of views. In this work, we present a frame synthesis algorithm to achieve full-frame video stabilization. We first estimate dense warp fields from neighboring frames and then synthesize the stabilized frame by fusing the warped contents. Our core technical novelty lies in the learning-based hybrid-space fusion that alleviates artifacts caused by optical flow inaccuracy and fast-moving objects. We validate the effectiveness of our method on the NUS, selfie, and DeepStab video datasets. Extensive experiment results demonstrate the merits of our approach over prior video stabilization methods.
 
-## Set Envirionment
+## Setup
 
-* Linux ubuntu 20.04 with python 3.11, pytorch 2.1.2, cudatoolkit 12.2
-
-Create a new conda environment and install the required packages:
+Setup environment for [Yu and Ramamoorthi 2020].
 ```
-conda env create --name FuseRoad python=3.11
+cd CVPR2020CODE_yulunliu_modified
+conda create --name FuSta_CVPR2020 python=3.6
+conda activate FuSta_CVPR2020
+pip install -r requirements_CVPR2020.txt
+./install.sh
 ```
 
+Download pre-trained checkpoints of [Yu and Ramamoorthi 2020].
 ```
-conda activate FuseRoad
+wget https://www.cmlab.csie.ntu.edu.tw/~yulunliu/FuSta/CVPR2020_ckpts.zip
+unzip CVPR2020_ckpts.zip
+cd ..
 ```
-
-After creating the environment, install the required packages:
-
+Setup environment for FuSta.
 ```
-pip imstall openmim
-mim install mmcv-full
-pip install -r requirements.txt
-cd models/py_utils/orn && pip install .
-```
-
-CULane evaluation environment is required to evaluate the performance on CULane dataset. Please refer to [CULane](https://xingangpan.github.io/projects/CULane.html) to compile the evaluating environment.
-
-## Data Preparation
-
-Download and extract TuSimple train, val and test with annotations from 
-[TuSimple](https://github.com/TuSimple/tusimple-benchmark)
-, and download and extract CULane train, val and test with annotations from
-[CULane](https://xingangpan.github.io/projects/CULane.html).
-
-We expect the directory structure to be the following:
-### TuSimple:
-```
-TuSimple/
-    LaneDetection/
-        clips/
-        label_data_0313.json
-        label_data_0531.json
-        label_data_0601.json
-        test_label.json
+conda deactivate
+conda create --name FuSta python=3.6
+conda activate FuSta
+conda install pytorch=1.6.0 torchvision=0.7.0 cudatoolkit=10.1 -c pytorch
+conda install matplotlib
+conda install tensorboard
+conda install scipy
+conda install opencv
+conda install -c conda-forge cupy cudatoolkit=10.1
+pip install PyMaxflow
 ```
 
-### CULane:
+## Running code
+
+Calculate smoothed flow using [Yu and Ramamoorthi 2020].
 ```
-CULane/
-    driver_23_30frame/
-    driver_37_30frame/
-    driver_100_30frame/
-    driver_161_90frame/
-    driver_182_30frame/
-    driver_193_90frame/
-    list/
-        test_split/
-        test.txt
-        train.txt
-        train_gt.txt
-        val.txt
-        val_gt.txt
+conda activate FuSta_CVPR2020
+cd CVPR2020CODE_yulunliu_modified
+python main.py [input_frames_path] [output_frames_path] [output_warping_field_path]
+```
+e.g.
+```
+python main.py ../../NUS/Crowd/0/ NUS_results/Crowd/0/ CVPR2020_warping_field/
 ```
 
-### Cityscapes:
+Run FuSta video stabilization.
 ```
-Cityscapes/
-    train/              # imgs_in train set
-    train_labels/       # labels_in train set
-    val/                # imgs_in val set
-    val_labels/         # labels_in val set
-    Cityscapes_class_dict_19_classes.csv
+conda deactivate
+conda activate FuSta
+cd ..
+python run_FuSta.py --load [model_checkpoint_path] --input_frames_path [input_frames_path] --warping_field_path [warping_field_path] --output_path [output_frames_path] --temporal_width [temporal_width] --temporal_step [temporal_step]
 ```
-
-## Training
-Download the pretrained weights from [Segformer](https://github.com/NVlabs/SegFormer) provided [OneDrive](https://connecthkuhk-my.sharepoint.com/personal/xieenze_connect_hku_hk/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fxieenze%5Fconnect%5Fhku%5Fhk%2FDocuments%2Fsegformer%2Fpretrained%5Fmodels&ga=1) and put it to models/py_utils/SegFormer/imagenet_pretrained directory.
-To train a model:
-
-(If you only want to use the train set, please see config file and set "train_split": "train")
-
-(If you don't want to use the SRKE module, please set "use_SRKE": False)
+e.g.
 ```
-python train.py CONFIG_FILE_NAME --model_name FuseRoad
-```
-* Visualized images are in ./results during training.
-* Saved model files are in ./cache during training.
-
-To train a model from a snapshot model file:
-```
-python train.py CONFIG_FILE_NAME --model_name FuseRoad --iter ITER_NUMS
+python run_FuSta.py --load NeRViS_model/checkpoint/model_epoch050.pth --input_frames_path ../NUS/Crowd/0/ --warping_field_path CVPR2020CODE_yulunliu_modified/CVPR2020_warping_field/ --output_path output/ --temporal_width 41 --temporal_step 4
 ```
 
-## Evaluation
-Download the trained model from [GoogleDrive](https://drive.google.com/drive/folders/1e35oSeIUSWnr4MvrlIP853U91qCwbnLp?usp=drive_link) and put it to ./cache directory.
+## Evaluation metrics
 
-### Example
-```
-python test.py CONFIG_FILE_NAME --model_name FuseRoad --modality eval --split testing --testiter ITER_NUMS
-```
+Please refer to `metrics.py` for the calculation of metrics C/D/S and `metrics_A.py` for metric A. 
+The implementation of `metrics.py` is modified from [DIFRINT](https://github.com/jinsc37/DIFRINT/blob/master/metrics.py) with the help of [Stefan Klut](https://github.com/stefanklut).
+Also, note that the calculation of metrics C/D/S might fail and result in Nan or numbers larger than 1.0 evaluating some compared stabilization methods.
+This is due to the lack of feature points or the failure of homography estimation.
+We only average the scores of the video sequences that all compared methods successfully pass the metric calculations.
 
-### Eval on TuSimple
-```
-python test.py FuseRoad_TuSimple --model_name FuseRoad --modality eval --split testing --testiter 800000
-```
-### Eval on CULane
-```
-python test.py FuseRoad_CULane_b5 --model_name FuseRoad --modality eval --split testing --testiter 800000
-```
-then
-```
-cd lane_evaluation
-sh run.sh   # to obtain the overall F1-measure
-sh Run.sh   # to valid the splitting performance
-```
+## Citation
 
-
-### To save detected images
 ```
-python test.py FuseRoad_TuSimple --model_name FuseRoad --modality eval --split testing --testiter 800000 --debug
+@inproceedings{Liu-FuSta-2021,
+    title     = {Hybrid Neural Fusion for Full-frame Video Stabilization}, 
+    author    = {Liu, Yu-Lun and Lai, Wei-Sheng and Yang, Ming-Hsuan and Chuang, Yung-Yu and Huang, Jia-Bin}, 
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision}, 
+    year      = {2021}
+}
 ```
-
-## Demo
-
-### To demo on a set of images(store images in root_dir/images, then the detected results will be saved in root_dir/detections):
-```
-python test.py FuseRoad_TuSimple --model_name FuseRoad --modality images --image_root root_dir --debug
-```
-
-### Or can use the following command to demo on images in a specific directory and determine the output directory(recommended):
-```
-python3 demo.py FuseRoad_TuSimple --model_name FuseRoad --testiter 800000 --image_root image_dir --save_root save_dir
-```
-
-## Results
-
-<div align="center">
-  <img src="./resources/TuSimple_Comparison.png" height="320">
-</div>
-<p align="center">
-  Table 1: Comparison with State-of-the-art methods on TuSimple testing set.
-</p>
-
-<div align="center">
-  <img src="./resources/Qualitative_results.png" width="1440">
-</div>
-<p align="center">
-  Figure 2: Qualitative results on TuSimple testing set.
-</p>
-
-
-## License
-FuseRoad is released under BSD 3-Clause License.
 
 ## Acknowledgements
 
-[DETR](https://github.com/facebookresearch/detr)
-
-[PolyLaneNet](https://github.com/lucastabelini/PolyLaneNet)
-
-[CornerNet](https://github.com/princeton-vl/CornerNet)
-
-[CULane](https://xingangpan.github.io/projects/CULane.html)
-
-[LSTR](https://github.com/liuruijin17/LSTR)
+Parts of the code were based on from [AdaCoF-pytorch](https://github.com/HyeongminLEE/AdaCoF-pytorch).
+Some functions are borrowed from [softmax-splatting](https://github.com/sniklaus/softmax-splatting), [RAFT](https://github.com/princeton-vl/RAFT), and [[Yu and Ramamoorthi 2020](http://jiyang.fun/projects.html)]
