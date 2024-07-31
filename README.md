@@ -8,7 +8,7 @@ Currently, humanoid robots executing various tasks experience significant image 
 
 Setup environment for [Yu and Ramamoorthi 2020].
 ```
-cd HuKIS
+cd HuKIS-SLAM
 conda create --name MTSVS python=3.6
 conda activate MTSVS
 pip install -r requirements_MTSVS.txt
