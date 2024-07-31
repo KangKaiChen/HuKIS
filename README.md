@@ -52,6 +52,11 @@ HRReal/
 
 ```
 
+## Training
+
+ CUDA_VISIBLE_DEVICES=0 python train.py --out_dir output_noProxy_poolingWithMask_decoderWithMask_decoderWithGatedConv_poolingWithCenterBiasCNNFlowError_ResidualDetailTransfer_faster  --pooling_with_mask 1 --decoder_with_mask 1 --decoder_with_gated_conv 1 --center_residual_detail_transfer 0 --pooling_with_center_bias 1 --residual_detail_transfer 1 --pooling_type CNN_flowError --gumbel 0 --train ./DataSet_Real --test_input ./DataSet_Real
+
+
 ## Running code
 
 Calculate smoothed flow using [Yu and Ramamoorthi 2020].
