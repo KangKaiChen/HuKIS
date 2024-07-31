@@ -54,10 +54,14 @@ HRReal/
 
 ## Training
 
-```
-python train.py --out_dir output_noProxy_poolingWithMask_decoderWithMask_decoderWithGatedConv_poolingWithCenterBiasCNNFlowError_ResidualDetailTransfer_faster  --pooling_with_mask 1 --decoder_with_mask 1 --decoder_with_gated_conv 1 --center_residual_detail_transfer 0 --pooling_with_center_bias 1 --residual_detail_transfer 1 --pooling_type CNN_flowError --gumbel 0 --train ./DataSet_Real --test_input ./DataSet_Real
+If you don't want to use the Blur processing module, please set "inference_with_frame_selection": 0)
 
 ```
+python train.py --out_dir output_noProxy_poolingWithMask_decoderWithMask  --pooling_with_mask 1 --decoder_with_mask 1 --decoder_with_gated_conv 1 --center_residual_detail_transfer 0 --pooling_with_center_bias 1 --residual_detail_transfer 1 --pooling_type CNN_flowError --gumbel 0 --train ./DataSet_Real --test_input ./DataSet_Real
+
+```
+* Visualized images are in ./output_noProxy_poolingWithMask/result during training.
+* Saved model weight are in ./output_noProxy_poolingWithMask/result/checkpoint files during training.
 
 ## Running code
 
