@@ -1,5 +1,4 @@
-# HuKIS-SLAM: Humanoid Kinematics-Integrated Image Stabilized
-SLAM System
+# HuKIS-SLAM: Humanoid Kinematics-Integrated Image Stabilized SLAM System
 
 <img src='./teaser.png' width=1000>
 
