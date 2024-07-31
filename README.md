@@ -1,6 +1,6 @@
 # HuKIS-SLAM: Humanoid Kinematics-Integrated Image Stabilized SLAM System
 
-<img src='./teaser.png' width=1000>
+<img src='./HuKIS.png' width=1000>
 
 Currently, humanoid robots executing various tasks experience significant image jitter due to bipedal movement, leading to image blur and dramatic changes in camera perspectives. We propose a novel multimodal model called HuKIS-SLAM. This model employs our designed ST-Net for motion smoothing, which stabilizes the input images in advance, and then inputs them into the convolutional neural network MTSVS to fuse them into highly stable frames. Our key innovation lies in integrating head pose learning for humanoid robots, effectively mitigating the effects caused by inaccurate optical flow and fast-moving objects. Extensive experiments on both virtual and real-world datasets demonstrate the advantages of our method over other Visual SLAM approaches.
 
